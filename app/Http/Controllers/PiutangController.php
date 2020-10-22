@@ -13,6 +13,17 @@ Use Session;
 
 class PiutangController extends Controller
 {
+    private function _validation(Request $request){
+        $request->validate([
+        'tanggal' => 'required',
+        'nama_customer_id' => 'required',
+        ],
+        [
+        'tanggal.required' => 'Tidak Boleh Kosong',
+        'nama_customer_id.required' => 'Tidak Boleh Kosong',
+        ]);
+    }
+
     public function index (){
         $piutang = Piutang::get();
         $barang = Barang::get();
@@ -33,6 +44,7 @@ class PiutangController extends Controller
 
      public function save(Request $request)
     {
+        $this->_validation($request);
         try {
             $tanggal = $request->tanggal;
             $nama = $request->nama;

@@ -11,6 +11,17 @@ use Illuminate\Http\Request;
 
 class HutangController extends Controller
 {
+    private function _validation(Request $request){
+        $request->validate([
+        'tanggal' => 'required',
+        'nama_supplier_id' => 'required',
+        ],
+        [
+        'tanggal.required' => 'Tidak Boleh Kosong',
+        'nama_supplier_id.required' => 'Tidak Boleh Kosong',
+        ]);
+    }
+
     public function index (){
         $hutang = Hutang::get();
         $barang = Barang::get();
@@ -31,6 +42,7 @@ class HutangController extends Controller
 
      public function save(Request $request)
     {
+        $this->_validation($request);
         try {
             $tanggal = $request->tanggal;
             $nama = $request->nama;
