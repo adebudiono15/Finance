@@ -8,6 +8,7 @@ use App\Models\Hutang;
 use App\Models\HutangLine;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Session;
 
 class HutangController extends Controller
 {
@@ -15,6 +16,7 @@ class HutangController extends Controller
         $request->validate([
         'tanggal' => 'required',
         'nama_supplier_id' => 'required',
+        
         ],
         [
         'tanggal.required' => 'Tidak Boleh Kosong',
@@ -92,6 +94,27 @@ class HutangController extends Controller
         // dd($request->all());
         return redirect()->back();
         
+    }
+
+    public function barang(Request $request)
+    {
+        $request->validate([
+            'nama_barang' => 'required',
+            'harga' => 'required',
+            ],
+            [
+            'nama_barang.required' => 'Tidak Boleh Kosong',
+            'harga.required' => 'Tidak Boleh Kosong',
+            ]);
+         $barang = new Barang;
+         $barang->nama_barang = $request->nama_barang;
+         $harga = $request->harga;
+         $barang->harga = str_replace(["." , "Rp", " "], '', $harga);
+       
+     //   dd($barang);
+       $barang->save();
+       Session::flash('success');
+       return redirect('hutang');
     }
 
     public function drb($id)

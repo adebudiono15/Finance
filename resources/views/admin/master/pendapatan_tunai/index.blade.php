@@ -4,6 +4,7 @@
 
 @push('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -26,26 +27,28 @@
                                 <table id="basic-datatables" class="display table table-striped table-hover" >
                                     <thead>
                                         <tr>
-                                            <th>NO</th>
+                                            <th hidden>ID</th>
+                                            <th hidden>TANGGAL</th>
                                             <th>KODE</th>
                                             <th>DIVISI</th>
+                                            <th hidden>JENIS PENDAPATAN</th>
+                                            <th hidden>JUMLAH PENDAPATAN</th>
+                                            <th hidden>KETERANGAN</th>
                                             <th>JUMLAH</th>
-                                            {{-- <th>TANGGAL</th> --}}
-                                            {{-- <th>JENIS</th> --}}
-                                            {{-- <th>KET</th> --}}
                                             <th style="width: 300px" class="text-center">AKSI</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($pendapatan_tunai as $e=>$item)
+                                        @foreach ($pendapatan_tunai as $item)
                                         <tr>
-                                            <td>{{ $e+1 }}</td>
+                                            <td hidden>{{ $item->id }}</td>
+                                            <td hidden>{{ date('d F Y ', strtotime ($item->created_at)) }}</td>
                                             <td>{{ $item->kode_pendapatan_tunai }}</td>
                                             <td>{{ $item->divisi }}</td>
+                                            <td hidden>{{ $item->jenis_pendapatan }}</td>
+                                            <td hidden>{{ $item->jumlah_pendapatan }}</td>
+                                            <td hidden>{{ $item->keterangan }}</td>
                                             <td class="text-right">{{ number_format($item->jumlah_pendapatan,0) }}</td>
-                                            {{-- <td>{{ $item->jenis_pendapatan }}</td> --}}
-                                            {{-- <td>{{ $item->keterangan }}</td> --}}
-                                            {{-- <td>{{ date('d F Y', strtotime ($item->tanggal)) }}</td> --}}
                                             <td class="text-center" style="width: 200px">
                                                 <a href="#" data-id="{{ $item->id }}"
                                                     class="btn btn-sm btn-info btn-shadow mr-2 mt-2 mb-2 btn-edit">
@@ -265,9 +268,27 @@
        $('#kode_dua').val("MT"+satu+dua+tiga);
       }
 </script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
 <script >
    $(document).ready(function() {
 			$('#basic-datatables').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                        columns: [ 1,2,3,4,5,6]
+                    }   
+                    }
+                ],
+                        aaSorting: [[0, 'desc']]
 			});
 		});
 </script>

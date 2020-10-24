@@ -55,7 +55,7 @@
     {{-- riwayat --}}
     <div class="row mt-5">
         <div class="col-md-12  text-center">
-            <h5><b>RIWAYAT TRANSAKSI PEMBAYARAN SISA</b></h5> 
+            <h5><b>RIWAYAT TRANSAKSI PEMBAYARAN</b></h5> 
         </div>
     </div>
     <div class="row mt-1">

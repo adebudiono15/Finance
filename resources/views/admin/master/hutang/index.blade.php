@@ -1,9 +1,10 @@
 @extends('layouts.master')
 
-@section('title', 'Hutang')
+@section('title', 'Data Hutang')
 
 @push('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -26,9 +27,12 @@
                                 <table id="basic-datatables" class="display table table-striped table-hover" >
                                     <thead>
                                         <tr>
-                                            <th>NO</th>
-                                            <th>ID</th>
+                                            <th hidden>#</th>
+                                            <th hidden>NO</th>
+                                            <th>ID TRANSAKSI</th>
                                             <th>SUPPLIER</th>
+                                            <th hidden>TANGGAL</th>
+                                            <th hidden>TOTAL</th>
                                             <th>TOTAL</th>
                                             <th class="text-center">STATUS</th>
                                             <th style="width: 300px" class="text-center">AKSI</th>
@@ -37,9 +41,12 @@
                                     <tbody>
                                         @foreach ($hutang as $e=>$item)
                                         <tr>
-                                            <td>{{ $e+1 }}</td>
+                                            <td hidden>{{ $item->id }}</td>
+                                            <td hidden>{{ $e+1 }}</td>
                                             <td>{{ $item->kode_hutang }}</td>
                                             <td>{{ $item->nama_supplier_id }}</td>
+                                            <td hidden>{{ date('d F Y ', strtotime ($item->created_at)) }}</td>
+                                            <td hidden>{{ $item->grand_total }}</td>
                                             <td class="text-right">{{ number_format($item->grand_total,0) }}</td>
                                             <td class="text-center">
                                                 <div class="d-flex align-items-center" style="width: 150px;">
@@ -63,7 +70,7 @@
                                                 <a href="#" data-id="{{ $item->id }}"
                                                     class="btn btn-sm btn-info btn-shadow mr-2 mt-2 mb-2 btn-drb">
                                                     <i class="far fa-edit"></i>
-                                                    <span class="align-middle">DRB</span>
+                                                    <span class="align-middle">DETAIL</span>
                                                 </a>
                 
                                                 <a href="#" data-id="{{ $item->id }}"
@@ -100,7 +107,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h5 class="modal-title text-white">TAMBAH DATA hutang</h5>
+                    <h5 class="modal-title text-white">TAMBAH DATA HUTANG</h5>
                     <button type="button" class="close text-white" data-dismiss="modal">×</button>
                 </div>
                 <input type="hidden" name="grand_total" value="0">
@@ -152,6 +159,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
+                                        <a class="btn btn-dark btn-sm float-right insertbarang" href="#insertbarang" data-toggle="modal" style="margin-top: 35px;">Tambah Data Barang</a>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
@@ -198,6 +206,49 @@
         </div>
     </div>
     {{-- last Detail --}}
+
+    {{-- insert barang --}}
+    <div id="insertbarang" class="modal fade" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title text-white">TAMBAH DATA BARANG</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">×</button>
+                </div>
+                <form class="form form-vertical" method="post" enctype="multipart/form-data"
+                    action="{{ route('save-barang-hutang') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg">
+                                <div class="form-group">
+                                    <label for="nama_barang" @error('nama_barang') class="text-danger" @enderror>NAMA BARANG @error('nama_barang')
+                                        | {{ $message }}
+                                        @enderror</label>
+                                    <input type="text" class="form-control" value="{{ old('nama_barang') }}"
+                                        name="nama_barang" placeholder="-" style="height: 28px;">
+                                </div>
+                            </div>
+                            <div class="col-lg">
+                                <div class="form-group">
+                                    <label for="harga" @error('harga') class="text-danger" @enderror>HARGA BARANG @error('harga')
+                                        | {{ $message }}
+                                        @enderror</label>
+                                    <input type="text" class="form-control" id="rupiah" value="{{ old('harga') }}"
+                                        name="harga" placeholder="-" style="height: 28px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-info btn-shadow">Simpan</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-dismiss="modal">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- last insert barang --}}
 @endsection
 
 @push('js')
@@ -294,14 +345,38 @@
        var satu = kode.substring(8);
        var dua = kode.substring(5,7);
        var tiga = kode.substring(2,4);
-       $('#kode_dua').val("MT"+satu+dua+tiga);
+       $('#kode_dua').val("KH"+satu+dua+tiga);
       }
 </script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
 <script >
    $(document).ready(function() {
 			$('#basic-datatables').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                        columns: [ 1,2,3,4,5]
+                    }   
+                    }
+                ],
+                        aaSorting: [[0, 'desc']]
 			});
 		});
+</script>
+<script>
+     $('.insertbarang').on('click', function() {
+            let id = $(this).data('id')
+            $('#insert').modal('hide')
+        })
 </script>
 <script>
         $('.btn-drb').on('click', function() {
@@ -351,6 +426,10 @@
 
         @if ($errors->any()) {
             $('#insert').modal('show')
+        }
+        @endif
+        @if ($errors->any()) {
+            $('#insertbarang').modal('show')
         }
         @endif
 

@@ -1,11 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+Route::group(['middleware' => 'auth'], function(){
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
@@ -99,19 +101,33 @@ Route::get('barang/ajax/{id}', 'PiutangController@get_barang');
 // Piutang
 Route::get('piutang', 'PiutangController@index')->name('piutang');
 Route::post('save-piutang', 'PiutangController@save')->name('save-piutang');
+Route::post('save-barang-piutang', 'PiutangController@barang')->name('save-barang-piutang');
 Route::get('{id}/drb-piutang', 'PiutangController@drb')->name('drb-piutang');
 Route::put('update-piutang/{id}', 'PiutangController@update');
 Route::delete('piutang/{id}', 'PiutangController@delete')->name('delete-piutang');
+Route::get('piutang/pdf/{id}', 'PiutangController@pdf');
+// Route::get('download-pdf' ,  'PiutangController@pdf')->name('pdf.download');
 Route::get('{id}/detail-piutang', 'PiutangController@detail')->name('detail-piutang');
 
 // hutang
 Route::get('hutang', 'HutangController@index')->name('hutang');
 Route::post('save-hutang', 'HutangController@save')->name('save-hutang');
+Route::post('save-barang-hutang', 'HutangController@barang')->name('save-barang-hutang');
 Route::get('{id}/drb-hutang', 'HutangController@drb')->name('drb-hutang');
 Route::put('update-hutang/{id}', 'HutangController@update');
 Route::delete('hutang/{id}', 'HutangController@delete')->name('delete-hutang');
 Route::get('{id}/detail-hutang', 'HutangController@detail')->name('detail-hutang');
-
+});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    return 'Application cache cleared';
+});
+
+Route::get('/config-cache', function() {
+    $exitCode = Artisan::call('config:cache');
+    return 'Config cache cleared';
+});

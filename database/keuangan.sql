@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 22 Okt 2020 pada 18.39
+-- Waktu pembuatan: 24 Okt 2020 pada 22.56
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -66,7 +66,10 @@ CREATE TABLE `barang` (
 
 INSERT INTO `barang` (`id`, `nama_barang`, `harga`, `created_at`, `updated_at`) VALUES
 (5, 'Dobha 6 ml - Lusin', 110000, '2020-10-19 09:05:55', '2020-10-19 09:05:55'),
-(6, 'Dobha 35 ml - Lusin', 276000, '2020-10-19 09:06:27', '2020-10-19 09:06:46');
+(6, 'Dobha 35 ml - Lusin', 276000, '2020-10-19 09:06:27', '2020-10-19 09:06:46'),
+(10, 'Parfum Lovely (Kg)', 400000, '2020-10-23 06:26:36', '2020-10-23 06:26:52'),
+(15, 'save dari piutang', 1000, '2020-10-24 20:53:46', '2020-10-24 20:53:46'),
+(16, 'Save lagi', 2000, '2020-10-24 20:54:09', '2020-10-24 20:54:09');
 
 -- --------------------------------------------------------
 
@@ -161,7 +164,9 @@ CREATE TABLE `history_hutang` (
 INSERT INTO `history_hutang` (`id`, `hutang`, `kode_hutang`, `total_pembayaran`, `created_at`, `updated_at`) VALUES
 (1, 2, 'MT22102091', 320000, '2020-10-22 16:35:24', '2020-10-22 16:35:24'),
 (2, 2, 'MT22102091', 500000, '2020-10-22 16:35:39', '2020-10-22 16:35:39'),
-(3, 3, 'MT22102011', 662000, '2020-10-22 16:36:33', '2020-10-22 16:36:33');
+(3, 3, 'MT22102011', 662000, '2020-10-22 16:36:33', '2020-10-22 16:36:33'),
+(4, 4, 'MT23102040', 20000000, '2020-10-23 06:32:07', '2020-10-23 06:32:07'),
+(5, 4, 'MT23102040', 20000000, '2020-10-23 06:32:21', '2020-10-23 06:32:21');
 
 -- --------------------------------------------------------
 
@@ -186,7 +191,10 @@ INSERT INTO `history_piutang` (`id`, `piutang`, `kode_piutang`, `total_pembayara
 (1, 31, 'MT22102064', 2000, '2020-10-22 13:55:51', '2020-10-22 13:55:51'),
 (2, 31, 'MT22102064', 8000, '2020-10-22 13:57:37', '2020-10-22 13:57:37'),
 (3, 31, 'MT22102064', 10000, '2020-10-22 14:18:26', '2020-10-22 14:18:26'),
-(4, 31, 'MT22102064', 90000, '2020-10-22 15:58:39', '2020-10-22 15:58:39');
+(4, 31, 'MT22102064', 90000, '2020-10-22 15:58:39', '2020-10-22 15:58:39'),
+(5, 33, 'MT23102049', 10000000, '2020-10-23 06:20:40', '2020-10-23 06:20:40'),
+(6, 33, 'MT23102049', 3760000, '2020-10-23 06:21:38', '2020-10-23 06:21:38'),
+(7, 32, 'MT22102084', 476000, '2020-10-24 11:21:55', '2020-10-24 11:21:55');
 
 -- --------------------------------------------------------
 
@@ -212,7 +220,8 @@ CREATE TABLE `hutang` (
 
 INSERT INTO `hutang` (`id`, `tanggal`, `kode_hutang`, `nama_supplier_id`, `sisa`, `barang`, `grand_total`, `created_at`, `updated_at`) VALUES
 (2, '2020-10-22', 'MT22102091', 'PT. MANE', 500000, '[\"5\"]', 1320000, '2020-10-21 17:00:00', '2020-10-22 16:35:39'),
-(3, '2020-10-22', 'MT22102011', 'PT. MANE', 0, '[\"6\",\"6\",\"5\"]', 662000, '2020-10-21 17:00:00', '2020-10-22 16:36:33');
+(3, '2020-10-22', 'MT22102011', 'PT. MANE', 0, '[\"6\",\"6\",\"5\"]', 662000, '2020-10-21 17:00:00', '2020-10-22 16:36:33'),
+(4, '2020-10-23', 'MT23102040', 'PT. MANE', 0, '[\"10\"]', 40000000, '2020-10-22 17:00:00', '2020-10-23 06:32:21');
 
 -- --------------------------------------------------------
 
@@ -239,7 +248,8 @@ INSERT INTO `hutang_line` (`id`, `hutang`, `barang`, `harga`, `qty`, `grand_tota
 (2, 2, 5, 110000, 12, 1320000, '2020-10-21 17:00:00', '2020-10-21 17:00:00'),
 (3, 3, 6, 276000, 1, 276000, '2020-10-21 17:00:00', '2020-10-21 17:00:00'),
 (4, 3, 6, 276000, 1, 276000, '2020-10-21 17:00:00', '2020-10-21 17:00:00'),
-(5, 3, 5, 110000, 1, 110000, '2020-10-21 17:00:00', '2020-10-21 17:00:00');
+(5, 3, 5, 110000, 1, 110000, '2020-10-21 17:00:00', '2020-10-21 17:00:00'),
+(6, 4, 10, 400000, 100, 40000000, '2020-10-22 17:00:00', '2020-10-22 17:00:00');
 
 -- --------------------------------------------------------
 
@@ -466,7 +476,9 @@ CREATE TABLE `piutang` (
 
 INSERT INTO `piutang` (`id`, `tanggal`, `kode_piutang`, `nama_customer_id`, `barang`, `grand_total`, `sisa`, `created_at`, `updated_at`) VALUES
 (31, '2020-10-22', 'MT22102064', 'Toko Abu Ali', '[\"5\"]', 110000, 0, '2020-10-21 17:00:00', '2020-10-22 15:58:39'),
-(32, '2020-10-22', 'MT22102084', 'Toko Abu Ali', '[\"5\",\"6\"]', 2476000, 2476000, '2020-10-21 17:00:00', '2020-10-22 15:58:09');
+(32, '2020-10-22', 'MT22102084', 'Toko Abu Ali', '[\"5\",\"6\"]', 2476000, 2000000, '2020-10-21 17:00:00', '2020-10-24 11:21:55'),
+(33, '2020-10-23', 'MT23102049', 'Toko Abu Ali', '[\"5\",\"6\"]', 13760000, 0, '2020-10-22 17:00:00', '2020-10-23 06:21:38'),
+(34, '2020-10-25', 'MT25102068', 'Toko Abu Ali', '[\"10\",\"6\",\"10\",\"6\",\"10\",\"6\",\"5\",\"10\"]', 2538000, 2538000, '2020-10-24 17:00:00', '2020-10-24 19:12:24');
 
 -- --------------------------------------------------------
 
@@ -495,7 +507,17 @@ INSERT INTO `piutang_line` (`id`, `piutang`, `barang`, `harga`, `qty`, `grand_to
 (5, 30, 6, 276000, 1, 276000, '2020-10-21 17:00:00', '2020-10-21 17:00:00'),
 (6, 31, 5, 110000, 1, 110000, '2020-10-21 17:00:00', '2020-10-21 17:00:00'),
 (7, 32, 5, 110000, 20, 2200000, '2020-10-21 17:00:00', '2020-10-21 17:00:00'),
-(8, 32, 6, 276000, 1, 276000, '2020-10-21 17:00:00', '2020-10-21 17:00:00');
+(8, 32, 6, 276000, 1, 276000, '2020-10-21 17:00:00', '2020-10-21 17:00:00'),
+(9, 33, 5, 110000, 100, 11000000, '2020-10-22 17:00:00', '2020-10-22 17:00:00'),
+(10, 33, 6, 276000, 10, 2760000, '2020-10-22 17:00:00', '2020-10-22 17:00:00'),
+(11, 34, 10, 400000, 1, 400000, '2020-10-24 17:00:00', '2020-10-24 17:00:00'),
+(12, 34, 6, 276000, 1, 276000, '2020-10-24 17:00:00', '2020-10-24 17:00:00'),
+(13, 34, 10, 400000, 1, 400000, '2020-10-24 17:00:00', '2020-10-24 17:00:00'),
+(14, 34, 6, 276000, 1, 276000, '2020-10-24 17:00:00', '2020-10-24 17:00:00'),
+(15, 34, 10, 400000, 1, 400000, '2020-10-24 17:00:00', '2020-10-24 17:00:00'),
+(16, 34, 6, 276000, 1, 276000, '2020-10-24 17:00:00', '2020-10-24 17:00:00'),
+(17, 34, 5, 110000, 1, 110000, '2020-10-24 17:00:00', '2020-10-24 17:00:00'),
+(18, 34, 10, 400000, 1, 400000, '2020-10-24 17:00:00', '2020-10-24 17:00:00');
 
 -- --------------------------------------------------------
 
@@ -531,6 +553,7 @@ INSERT INTO `supplier` (`id`, `kode_supplier`, `nama_supplier`, `alamat`, `telep
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -543,8 +566,8 @@ CREATE TABLE `users` (
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'invictus', 'invictus@gmail.com', NULL, '$2y$10$yXOVVyjJRCeXWA2aOzrII.vgpaBd.Tldh.yRrRQHaqj6.OaZDSqVC', NULL, '2020-10-22 16:12:39', '2020-10-22 16:12:39');
+INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'invictus', 'invictus', 'invictus@gmail.com', NULL, '$2y$10$yXOVVyjJRCeXWA2aOzrII.vgpaBd.Tldh.yRrRQHaqj6.OaZDSqVC', NULL, '2020-10-22 16:12:39', '2020-10-22 16:12:39');
 
 --
 -- Indexes for dumped tables
@@ -698,7 +721,7 @@ ALTER TABLE `bank`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT untuk tabel `customer`
@@ -722,25 +745,25 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT untuk tabel `history_hutang`
 --
 ALTER TABLE `history_hutang`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `history_piutang`
 --
 ALTER TABLE `history_piutang`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `hutang`
 --
 ALTER TABLE `hutang`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `hutang_line`
 --
 ALTER TABLE `hutang_line`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis_pendapatan`
@@ -788,13 +811,13 @@ ALTER TABLE `pengeluaran_tunai`
 -- AUTO_INCREMENT untuk tabel `piutang`
 --
 ALTER TABLE `piutang`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT untuk tabel `piutang_line`
 --
 ALTER TABLE `piutang_line`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `supplier`

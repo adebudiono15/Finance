@@ -10,6 +10,7 @@ use App\Models\PiutangLine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 Use Session;
+use PDF;
 
 class PiutangController extends Controller
 {
@@ -95,6 +96,27 @@ class PiutangController extends Controller
         return redirect()->back();
         
     }
+    
+    public function barang(Request $request)
+    {
+        $request->validate([
+            'nama_barang' => 'required',
+            'harga' => 'required',
+            ],
+            [
+            'nama_barang.required' => 'Tidak Boleh Kosong',
+            'harga.required' => 'Tidak Boleh Kosong',
+            ]);
+         $barang = new Barang;
+         $barang->nama_barang = $request->nama_barang;
+         $harga = $request->harga;
+         $barang->harga = str_replace(["." , "Rp", " "], '', $harga);
+       
+     //   dd($barang);
+       $barang->save();
+       Session::flash('success');
+       return redirect('piutang');
+    }
 
     public function drb($id)
     {
@@ -143,6 +165,18 @@ class PiutangController extends Controller
     {
         DB::table('piutang')->where('id', $id)->delete();
         Session::flash('delete');
+        return redirect()->back();
+    }
+
+    public function pdf($id){
+
+        $piutang = Piutang::find($id);
+        $css1 = 'assets/css/bootstrap.min.css';
+        $inv = date('d M Y');
+        $pdf = PDF::loadview('admin.master.piutang.pdf',compact('piutang','css1','inv'))->setPaper('a4', 'potrait');;
+        return $pdf->download('INVOICE.pdf');
+        // return $pdf->stream();
+        
         return redirect()->back();
     }
 }
