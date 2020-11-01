@@ -171,10 +171,9 @@ class PiutangController extends Controller
     public function pdf($id){
 
         $piutang = Piutang::find($id);
-        $css1 = 'assets/css/bootstrap.min.css';
         $inv = date('d M Y');
-        $pdf = PDF::loadview('admin.master.piutang.pdf',compact('piutang','css1','inv'))->setPaper('a4', 'potrait');;
-        return $pdf->download('INVOICE.pdf');
+        $pdf = PDF::loadview('admin.master.piutang.pdf',compact('piutang','inv'))->setPaper('a4', 'potrait');;
+        return $pdf->download($piutang->kode_piutang.$piutang->nama_customer_id.'.pdf');
         // return $pdf->stream();
         
         return redirect()->back();

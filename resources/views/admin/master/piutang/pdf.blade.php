@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ $css1 }}">
+    <link rel="stylesheet" href="{{ public_path('assets/css/bootstrap.min.css') }}">
 
     <title>{{ $piutang->kode_piutang }}-{{ $piutang->nama_customer_id }}</title>
   </head>
@@ -14,7 +14,7 @@
      
     <div class="row" style=" margin-bottom:30px;">
         <div class="col-lg-6 text-left">
-            <h6><b>PT. Dobha Putra Salim</b></h6> 
+            <img src="{{ public_path('assets/img/logo.png') }}" width="100px" alt="">
             <p style="font-size: 12px">Jln. Empang No. 12 Bogor Selatan, Kota Bogor</p> 
         </div>
         <div class="col-lg-6 text-right">
